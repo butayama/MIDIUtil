@@ -58,7 +58,7 @@ class TestMIDIUtils(unittest.TestCase):
         time = 0
         duration = 1
         volume = 100
-        MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+        MyMIDI.add_note(track, channel, pitch, time, duration, volume)
         self.assertEqual(MyMIDI.tracks[1].eventList[0].evtname, "NoteOn")
         self.assertEqual(MyMIDI.tracks[1].eventList[0].pitch, pitch)
         self.assertEqual(MyMIDI.tracks[1].eventList[0].tick, MyMIDI.time_to_ticks(time))
@@ -73,7 +73,7 @@ class TestMIDIUtils(unittest.TestCase):
         duration = 1
         volume = 100
         MyMIDI = MIDIFile(1)
-        MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+        MyMIDI.add_note(track, channel, pitch, time, duration, volume)
         self.assertEqual(MyMIDI.tracks[1].eventList[0].evtname, "NoteOn")
         self.assertEqual(MyMIDI.tracks[1].eventList[0].pitch, pitch)
         self.assertEqual(MyMIDI.tracks[1].eventList[0].tick, MyMIDI.time_to_ticks(time))
@@ -91,8 +91,8 @@ class TestMIDIUtils(unittest.TestCase):
         time2 = 1
         duration = 2
         volume = 100
-        MyMIDI.addNote(track, channel, pitch, time1, duration, volume)  # on at 0 off at 2
-        MyMIDI.addNote(track, channel, pitch, time2, duration, volume + 1)  # on at 1 off at 3
+        MyMIDI.add_note(track, channel, pitch, time1, duration, volume)  # on at 0 off at 2
+        MyMIDI.add_note(track, channel, pitch, time2, duration, volume + 1)  # on at 1 off at 3
         MyMIDI.close()
 
         # ticks have already been converted to delta ticks
@@ -115,7 +115,7 @@ class TestMIDIUtils(unittest.TestCase):
         time1 = 5
         duration = 1
         volume = 100
-        MyMIDI.addNote(track, channel, pitch, time1, duration, volume)
+        MyMIDI.add_note(track, channel, pitch, time1, duration, volume)
         MyMIDI.close()
         self.assertEqual(MyMIDI.tracks[1].MIDIEventList[0].evtname, 'NoteOn')
         self.assertEqual(MyMIDI.tracks[1].MIDIEventList[0].tick, MyMIDI.time_to_ticks(0))
@@ -125,9 +125,9 @@ class TestMIDIUtils(unittest.TestCase):
         # With two tracks
         track2 = 1
         MyMIDI = MIDIFile(2, adjust_origin=True)
-        MyMIDI.addNote(track, channel, pitch, time1, duration, volume)
+        MyMIDI.add_note(track, channel, pitch, time1, duration, volume)
         time2 = 6
-        MyMIDI.addNote(track2, channel, pitch, time2, duration, volume)
+        MyMIDI.add_note(track2, channel, pitch, time2, duration, volume)
         MyMIDI.close()
         # ticks have already been converted to delta ticks
         self.assertEqual(MyMIDI.tracks[1].MIDIEventList[0].evtname, 'NoteOn')
@@ -147,7 +147,7 @@ class TestMIDIUtils(unittest.TestCase):
         time = -5
         duration = 1
         volume = 100
-        MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+        MyMIDI.add_note(track, channel, pitch, time, duration, volume)
         MyMIDI.close()
         self.assertEqual(MyMIDI.tracks[1].MIDIEventList[0].evtname, 'NoteOn')
         self.assertEqual(MyMIDI.tracks[1].MIDIEventList[0].tick, MyMIDI.time_to_ticks(0))
@@ -163,10 +163,10 @@ class TestMIDIUtils(unittest.TestCase):
         time = -1
         duration = 1
         volume = 100
-        MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+        MyMIDI.add_note(track, channel, pitch, time, duration, volume)
         track2 = 1
         time2 = 0
-        MyMIDI.addNote(track2, channel, pitch, time2, duration, volume)
+        MyMIDI.add_note(track2, channel, pitch, time2, duration, volume)
         MyMIDI.close()
         self.assertEqual(MyMIDI.tracks[1].MIDIEventList[0].evtname, 'NoteOn')
         self.assertEqual(MyMIDI.tracks[1].MIDIEventList[0].tick, MyMIDI.time_to_ticks(0))
@@ -779,7 +779,7 @@ class TestMIDIUtils(unittest.TestCase):
     def testWriteFile(self):
         # Just to make sure the stream can be written without throwing an error.
         MyMIDI = MIDIFile(1)
-        MyMIDI.addNote(0, 0, 100, 0, 1, 100)
+        MyMIDI.add_note(0, 0, 100, 0, 1, 100)
         with open("/tmp/test.mid", "wb") as output_file:
             MyMIDI.write_file(output_file)
 
@@ -791,9 +791,9 @@ class TestMIDIUtils(unittest.TestCase):
         duration = 0.1
         volume   = 64
         MyMIDI = MIDIFile(1, adjust_origin=True)
-        MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+        MyMIDI.add_note(track, channel, pitch, time, duration, volume)
         time = 1.1
-        MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+        MyMIDI.add_note(track, channel, pitch, time, duration, volume)
 
         MyMIDI.close()
 
@@ -804,9 +804,9 @@ class TestMIDIUtils(unittest.TestCase):
 
         MyMIDI = MIDIFile(1, adjust_origin=False)
         time = 0.1
-        MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+        MyMIDI.add_note(track, channel, pitch, time, duration, volume)
         time = 0.2
-        MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+        MyMIDI.add_note(track, channel, pitch, time, duration, volume)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
@@ -822,7 +822,7 @@ class TestMIDIUtils(unittest.TestCase):
         duration = 1.0
         volume   = 64
         MyMIDI = MIDIFile(1)
-        MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+        MyMIDI.add_note(track, channel, pitch, time, duration, volume)
         MyMIDI.close()
         data_length_1 = len(MyMIDI.tracks[0].MIDIdata)
         MyMIDI.close()
@@ -848,14 +848,14 @@ class TestMIDIUtils(unittest.TestCase):
         duration = 1
         volume   = 64
         MyMIDI = MIDIFile(1)
-        MyMIDI.addNote(track, channel, pitch, time, duration, volume)  # also adds a corresponding NoteOff
-        MyMIDI.addNote(track, channel, pitch, time, duration, volume)  # also adds a corresponding NoteOff
+        MyMIDI.add_note(track, channel, pitch, time, duration, volume)  # also adds a corresponding NoteOff
+        MyMIDI.add_note(track, channel, pitch, time, duration, volume)  # also adds a corresponding NoteOff
         MyMIDI.close()
         self.assertEqual(2, len(MyMIDI.tracks[1].eventList))  # One NoteOn event, one NoteOff event
         MyMIDI = MIDIFile(1)
-        MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+        MyMIDI.add_note(track, channel, pitch, time, duration, volume)
         pitch = 70
-        MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+        MyMIDI.add_note(track, channel, pitch, time, duration, volume)
         MyMIDI.close()
         self.assertEqual(4, len(MyMIDI.tracks[1].eventList))  # Two NoteOn events, two NoteOff events
 

@@ -114,7 +114,7 @@ Version:    0.87
 Date:       9 October 2009
 Version:    0.86
 
-    * added addNote as main interface into package (not
+    * added add_note as main interface into package (not
       addNoteByNumber). It's been a while since I've cut a release,
       so there may be other things that have happened.
 

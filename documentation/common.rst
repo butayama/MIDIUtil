@@ -11,10 +11,10 @@ Adding Notes
 ------------
 
 As the MIDI standard is all about music, creating notes will probably be
-the lion's share of what you're doing. This is done with the ``addNote()``
+the lion's share of what you're doing. This is done with the ``add_note()``
 function.
 
-.. automethod:: MIDIFile.addNote
+.. automethod:: MIDIFile.add_note
   :noindex:
 
 As an example, the following code-fragment adds two notes to an (already
@@ -29,10 +29,10 @@ created) MIDIFile object:
   duration = 1   # In beats
   volume   = 100 # 0-127, 127 being full volume
 
-  MyMIDI.addNote(track,channel,pitch,time,duration,volume)
+  MyMIDI.add_note(track,channel,pitch,time,duration,volume)
   time  = 1
   pitch = 61
-  MyMIDI.addNote(track,channel,pitch,time,duration,volume)
+  MyMIDI.add_note(track,channel,pitch,time,duration,volume)
 
 Add a Tempo
 -----------

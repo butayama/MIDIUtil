@@ -129,7 +129,7 @@ write it to disk.
     MyMIDI.add_tempo(track,time, tempo)
 
     for pitch in degrees:
-        MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+        MyMIDI.add_note(track, channel, pitch, time, duration, volume)
         time = time + 1
 
     with open("major-scale.mid", "wb") as output_file:

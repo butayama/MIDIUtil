@@ -69,9 +69,9 @@ a beat, ie:
 
   time = 0
   duration = 1
-  MyMIDI.addNote(track,channel,pitch,time,duration,volume)
+  MyMIDI.add_note(track,channel,pitch,time,duration,volume)
   time = 0.5
-  MyMIDI.addNote(track,channel,pitch,time,duration,volume)
+  MyMIDI.add_note(track,channel,pitch,time,duration,volume)
 
 you end up with a note on event at 0, another note on event a 0.5, and
 two note off events, one at 1.0 and one at 1.5. So when the first note off
@@ -124,7 +124,7 @@ for you. Thus:
     track = 0
     big_track = 1000
     MyMIDI.add_tempo(big_track, 0, 120)
-    MyMIDI.addNote(track, 0, 69, 0, 1, 100)
+    MyMIDI.add_note(track, 0, 69, 0, 1, 100)
 
 works, even though "track 0" is really the second track in the file, and there is
 no track 1000.

@@ -16,14 +16,14 @@ time = 0
 MyMIDI.add_track_name(track, time, "Sample Track")
 MyMIDI.add_tempo(track, time, 120)
 
-# Add a note. addNote expects the following information:
+# Add a note. add_note expects the following information:
 channel = 0
 pitch = 60
 duration = 1
 volume = 100
 
 # Now add the note.
-MyMIDI.addNote(track, channel, pitch, time, duration, volume)
+MyMIDI.add_note(track, channel, pitch, time, duration, volume)
 
 # And write it to disk.
 with open("output.mid", 'wb') as binfile:
