@@ -9,12 +9,12 @@ from midiutil import MIDIFile
 # Create the MIDIFile Object
 MyMIDI = MIDIFile(1)
 
-# Add track name and tempo. The first argument to addTrackName and
-# addTempo is the time to write the event.
+# Add track name and tempo. The first argument to add_track_name and
+# add_tempo is the time to write the event.
 track = 0
 time = 0
-MyMIDI.addTrackName(track, time, "Sample Track")
-MyMIDI.addTempo(track, time, 120)
+MyMIDI.add_track_name(track, time, "Sample Track")
+MyMIDI.add_tempo(track, time, 120)
 
 # Add a note. addNote expects the following information:
 channel = 0
@@ -27,4 +27,4 @@ MyMIDI.addNote(track, channel, pitch, time, duration, volume)
 
 # And write it to disk.
 with open("output.mid", 'wb') as binfile:
-    MyMIDI.writeFile(binfile)
+    MyMIDI.write_file(binfile)

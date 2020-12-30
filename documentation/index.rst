@@ -126,14 +126,14 @@ write it to disk.
 
     MyMIDI = MIDIFile(1) # One track, defaults to format 1 (tempo track 
                          # automatically created)
-    MyMIDI.addTempo(track,time, tempo)
+    MyMIDI.add_tempo(track,time, tempo)
 
     for pitch in degrees:
         MyMIDI.addNote(track, channel, pitch, time, duration, volume)
         time = time + 1
 
     with open("major-scale.mid", "wb") as output_file:
-        MyMIDI.writeFile(output_file)
+        MyMIDI.write_file(output_file)
 
 There are several additional event types that can be added and there are
 various options available for creating the MIDIFile object, but the above

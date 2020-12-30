@@ -12,7 +12,7 @@ as follows:
 
   def __init__(self,
             numTracks=1,
-            removeDuplicates=True,
+            remove_duplicates=True,
             deinterleave=True,
             adjust_origin=False,
             file_format=1,
@@ -30,7 +30,7 @@ very useful), but it may be set higher for a multi-track file.
 
 This parameter defaults to ``1``.
 
-removeDuplicates
+remove_duplicates
 ----------------
 
 If set to ``True`` (the default), duplicate notes will be removed from
@@ -40,7 +40,7 @@ Notes are considered duplicates if they occur at the same time, and have
 equivalent pitch, and MIDI channel. If set to ``False`` no attempt is made
 to remove notes which appear to be duplicates.
 
-``removeDuplicates()`` also attempts to remove other kinds of duplicates. For
+``remove_duplicates()`` also attempts to remove other kinds of duplicates. For
 example, if there are two tempo events at the same time and same tempo, they
 are considered duplicates.
 
@@ -104,7 +104,7 @@ and format 2 files are supported.
 
 In the format 1 file there is a separate "tempo" track to which tempo and
 time signature events are written. The calls to create these events --
-``addTemo()`` and ``addTimeSignature()`` accept a track parameter, but in
+``addTemo()`` and ``add_time_signature()`` accept a track parameter, but in
 a format 1 file these are ignored. In format 2 files they are interpreted
 literally (and zero-origined, so that a two track file has indices ``0`` and
 ``1``).
@@ -123,7 +123,7 @@ for you. Thus:
 
     track = 0
     big_track = 1000
-    MyMIDI.addTempo(big_track, 0, 120)
+    MyMIDI.add_tempo(big_track, 0, 120)
     MyMIDI.addNote(track, 0, 69, 0, 1, 100)
 
 works, even though "track 0" is really the second track in the file, and there is

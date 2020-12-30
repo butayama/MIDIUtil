@@ -39,7 +39,7 @@ Add a Tempo
 
 Every track can have tempos specified (the unit of which is beats per minute).
 
-.. automethod:: MIDIFile.addTempo
+.. automethod:: MIDIFile.add_tempo
   :noindex:
 
 Example:
@@ -49,12 +49,12 @@ Example:
   track = 0
   time  = 0   # beats, beginning of track
   tempo = 120 # BPM
-  MyMIDI.addTempo(track, time, tempo)
+  MyMIDI.add_tempo(track, time, tempo)
 
 Assign a Name to a Track
 ------------------------
 
-.. automethod:: MIDIFile.addTrackName
+.. automethod:: MIDIFile.add_track_name
   :noindex:
 
 In general, the time should probably be t=0
@@ -66,7 +66,7 @@ Example:
   track      = 0
   time       = 0
   track_name = "Bassline 1"
-  MyMIDI.addTrackName(track, time, track_name)
+  MyMIDI.add_track_name(track, time, track_name)
 
 Adding a Program Change Event
 -----------------------------
@@ -83,7 +83,7 @@ musician-centric, so they are usually given as one-origined. So, for example,
 if you want to sound a Cello, you would use a program number of 42, not the
 43 which is given in the link above.
 
-.. automethod:: MIDIFile.addProgramChange
+.. automethod:: MIDIFile.add_program_change
   :noindex:
 
 Example:
@@ -95,14 +95,14 @@ Example:
   time    = 8 # Eight beats into the composition
   program = 42 # A Cello
 
-  MyMIDI.addProgramChange(track, channel, time, program)
+  MyMIDI.add_program_change(track, channel, time, program)
 
 Writing the File to Disk
 ------------------------
 
 Ultimately, you'll need to write your data to disk to use it.
 
-.. automethod:: MIDIFile.writeFile
+.. automethod:: MIDIFile.write_file
   :noindex:
 
 Example:
@@ -110,7 +110,7 @@ Example:
 .. code:: python
 
   with open("mymidifile.midi", 'wb') as output_file:
-      MyMIDI.writeFile(output_file)
+      MyMIDI.write_file(output_file)
 
 Additional Public Function
 --------------------------

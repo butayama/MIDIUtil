@@ -20,9 +20,9 @@ Recently the pitch bend message had been implemented. The advantage of the pitch
 bend is that almost all software and hardware understand it. The disadvantage is that
 different software and hardware can interpret the values differently.
 
-The main function to support a tuning change is ``changeNoteTuning``.
+The main function to support a tuning change is ``change_note_tuning``.
 
-.. automethod:: MIDIFile.changeNoteTuning
+.. automethod:: MIDIFile.change_note_tuning
 
 Tuning Program
 --------------
@@ -31,17 +31,17 @@ With some instruments, such as `timidity <http://timidity.sourceforge.net/>`_, t
 is all you need to do: timidity will apply the tuning change to the notes.
 Other instruments, such as `fluidsynth <http://www.fluidsynth.org/>`_, require
 that the tuning program be explicitly assigned. This is done with the
-``changeTuningProgram`` function:
+``change_tuning_program`` function:
 
-.. automethod:: MIDIFile.changeTuningProgram
+.. automethod:: MIDIFile.change_tuning_program
 
 Tuning Bank
 -----------
 
 The tuning bank can also be specified (fluidsynth assumes that any tuning
-you transmit via ``changeNoteTuning`` is assigned to bank zero):
+you transmit via ``change_note_tuning`` is assigned to bank zero):
 
-.. automethod:: MIDIFile.changeTuningBank
+.. automethod:: MIDIFile.change_tuning_bank
 
 An Example
 ----------
@@ -58,9 +58,9 @@ transmitted:
   program = 0
   bank    = 0
   time    = 0
-  MyMIDI.changeNoteTuning(track, tuning, tuningProgam=program)
-  MyMIDI.changeTuningBank(track, channel, time, bank) # may or may not be needed
-  MyMIDI.changeTuningProgram(track, channel, time, program) # ditto
+  MyMIDI.change_note_tuning(track, tuning, tuningProgam=program)
+  MyMIDI.change_tuning_bank(track, channel, time, bank) # may or may not be needed
+  MyMIDI.change_tuning_program(track, channel, time, program) # ditto
 
 
 
@@ -71,7 +71,7 @@ Pitch bend is a *channel level event*, meaning that if you pass a pitch wheel ev
 notes on that channel will be affected.
 
 
-.. automethod:: MIDIFile.addPitchWheelEvent
+.. automethod:: MIDIFile.add_pitch_wheel_event
 To Do
 -----
 

@@ -20,8 +20,8 @@ import unittest
 
 from midiutil.MidiFile import *
 
-from midiutil.MidiFile import writeVarLength,  \
-    frequencyTransform, returnFrequency, MAJOR, MINOR, SHARPS, FLATS, MIDIFile
+from midiutil.MidiFile import write_var_length,  \
+    frequency_transform, return_frequency, MAJOR, MINOR, SHARPS, FLATS, MIDIFile
 
 
 class Decoder(object):
@@ -45,10 +45,10 @@ class Decoder(object):
 class TestMIDIUtils(unittest.TestCase):
 
     def testWriteVarLength(self):
-        self.assertEqual(writeVarLength(0x70), [0x70])
-        self.assertEqual(writeVarLength(0x80), [0x81, 0x00])
-        self.assertEqual(writeVarLength(0x1FFFFF), [0xFF, 0xFF, 0x7F])
-        self.assertEqual(writeVarLength(0x08000000), [0xC0, 0x80, 0x80, 0x00])
+        self.assertEqual(write_var_length(0x70), [0x70])
+        self.assertEqual(write_var_length(0x80), [0x81, 0x00])
+        self.assertEqual(write_var_length(0x1FFFFF), [0xFF, 0xFF, 0x7F])
+        self.assertEqual(write_var_length(0x08000000), [0xC0, 0x80, 0x80, 0x00])
 
     def testAddNote(self):
         MyMIDI = MIDIFile(1)  # a format 1 file, so we increment the track number below
@@ -79,7 +79,7 @@ class TestMIDIUtils(unittest.TestCase):
         self.assertEqual(MyMIDI.tracks[1].eventList[0].tick, MyMIDI.time_to_ticks(time))
         self.assertEqual(MyMIDI.tracks[1].eventList[0].duration, MyMIDI.time_to_ticks(duration))
         self.assertEqual(MyMIDI.tracks[1].eventList[0].volume, volume)
-        MyMIDI.shiftTracks()
+        MyMIDI.shift_tracks()
         self.assertEqual(MyMIDI.tracks[1].eventList[0].tick, 0)
 
     def testDeinterleaveNotes(self):
@@ -178,43 +178,43 @@ class TestMIDIUtils(unittest.TestCase):
         self.assertEqual(MyMIDI.tracks[2].MIDIEventList[1].tick, MyMIDI.time_to_ticks(1))
 
     def testFrequency(self):
-        freq = frequencyTransform(8.1758)
+        freq = frequency_transform(8.1758)
         self.assertEqual(freq[0], 0x00)
         self.assertEqual(freq[1], 0x00)
         self.assertEqual(freq[2], 0x00)
-        freq = frequencyTransform(8.66196)  # 8.6620 in MIDI documentation
+        freq = frequency_transform(8.66196)  # 8.6620 in MIDI documentation
         self.assertEqual(freq[0], 0x01)
         self.assertEqual(freq[1], 0x00)
         self.assertEqual(freq[2], 0x00)
-        freq = frequencyTransform(440.00)
+        freq = frequency_transform(440.00)
         self.assertEqual(freq[0], 0x45)
         self.assertEqual(freq[1], 0x00)
         self.assertEqual(freq[2], 0x00)
-        freq = frequencyTransform(440.0016)
+        freq = frequency_transform(440.0016)
         self.assertEqual(freq[0], 0x45)
         self.assertEqual(freq[1], 0x00)
         self.assertEqual(freq[2], 0x01)
-        freq = frequencyTransform(439.9984)
+        freq = frequency_transform(439.9984)
         self.assertEqual(freq[0], 0x44)
         self.assertEqual(freq[1], 0x7f)
         self.assertEqual(freq[2], 0x7f)
-        freq = frequencyTransform(8372.0190)
+        freq = frequency_transform(8372.0190)
         self.assertEqual(freq[0], 0x78)
         self.assertEqual(freq[1], 0x00)
         self.assertEqual(freq[2], 0x00)
-        freq = frequencyTransform(8372.062)  # 8372.0630 in MIDI documentation
+        freq = frequency_transform(8372.062)  # 8372.0630 in MIDI documentation
         self.assertEqual(freq[0], 0x78)
         self.assertEqual(freq[1], 0x00)
         self.assertEqual(freq[2], 0x01)
-        freq = frequencyTransform(13289.7300)
+        freq = frequency_transform(13289.7300)
         self.assertEqual(freq[0], 0x7F)
         self.assertEqual(freq[1], 0x7F)
         self.assertEqual(freq[2], 0x7E)
-        freq = frequencyTransform(12543.8760)
+        freq = frequency_transform(12543.8760)
         self.assertEqual(freq[0], 0x7F)
         self.assertEqual(freq[1], 0x00)
         self.assertEqual(freq[2], 0x00)
-        freq = frequencyTransform(8.2104)  # Just plain wrong in documentation, as far as I can tell.
+        freq = frequency_transform(8.2104)  # Just plain wrong in documentation, as far as I can tell.
         # self.assertEqual(freq[0],  0x0)
         # self.assertEqual(freq[1],  0x0)
         # self.assertEqual(freq[2],  0x1)
@@ -222,37 +222,37 @@ class TestMIDIUtils(unittest.TestCase):
         # Test the inverse
         testFreq = 15.0
         accuracy = 0.00001
-        x = returnFrequency(frequencyTransform(testFreq))
+        x = return_frequency(frequency_transform(testFreq))
         delta = abs(testFreq - x)
         self.assertEqual(delta < (accuracy * testFreq), True)
         testFreq = 200.0
-        x = returnFrequency(frequencyTransform(testFreq))
+        x = return_frequency(frequency_transform(testFreq))
         delta = abs(testFreq - x)
         self.assertEqual(delta < (accuracy * testFreq), True)
         testFreq = 400.0
-        x = returnFrequency(frequencyTransform(testFreq))
+        x = return_frequency(frequency_transform(testFreq))
         delta = abs(testFreq - x)
         self.assertEqual(delta < (accuracy * testFreq), True)
         testFreq = 440.0
-        x = returnFrequency(frequencyTransform(testFreq))
+        x = return_frequency(frequency_transform(testFreq))
         delta = abs(testFreq - x)
         self.assertEqual(delta < (accuracy * testFreq), True)
         testFreq = 1200.0
-        x = returnFrequency(frequencyTransform(testFreq))
+        x = return_frequency(frequency_transform(testFreq))
         delta = abs(testFreq - x)
         self.assertEqual(delta < (accuracy * testFreq), True)
         testFreq = 5000.0
-        x = returnFrequency(frequencyTransform(testFreq))
+        x = return_frequency(frequency_transform(testFreq))
         delta = abs(testFreq - x)
         self.assertEqual(delta < (accuracy * testFreq), True)
         testFreq = 12000.0
-        x = returnFrequency(frequencyTransform(testFreq))
+        x = return_frequency(frequency_transform(testFreq))
         delta = abs(testFreq - x)
         self.assertEqual(delta < (accuracy * testFreq), True)
 
     def testSysEx(self):
         MyMIDI = MIDIFile(1)
-        MyMIDI.addSysEx(0, 0, 0, struct.pack('>B', 0x01))
+        MyMIDI.add_sys_ex(0, 0, 0, struct.pack('>B', 0x01))
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
@@ -270,7 +270,7 @@ class TestMIDIUtils(unittest.TestCase):
 
         val = 1000
         MyMIDI = MIDIFile(1)
-        MyMIDI.addPitchWheelEvent(0, 0, 0, val)
+        MyMIDI.add_pitch_wheel_event(0, 0, 0, val)
         MyMIDI.close()
 
         MSB = (val + 8192) >> 7
@@ -284,7 +284,7 @@ class TestMIDIUtils(unittest.TestCase):
 
         val = -1000
         MyMIDI = MIDIFile(1)
-        MyMIDI.addPitchWheelEvent(0, 0, 0, val)
+        MyMIDI.add_pitch_wheel_event(0, 0, 0, val)
         MyMIDI.close()
 
         MSB = (val + 8192) >> 7
@@ -299,7 +299,7 @@ class TestMIDIUtils(unittest.TestCase):
     def testTempo(self):
         tempo = 60
         MyMIDI = MIDIFile(1, file_format=2)
-        MyMIDI.addTempo(0, 0, tempo)
+        MyMIDI.add_tempo(0, 0, tempo)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[0].MIDIdata)
@@ -316,7 +316,7 @@ class TestMIDIUtils(unittest.TestCase):
 
         tempo = 60
         MyMIDI = MIDIFile(2, file_format=1)
-        MyMIDI.addTempo(1, 0, tempo)
+        MyMIDI.add_tempo(1, 0, tempo)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[0].MIDIdata)
@@ -332,12 +332,12 @@ class TestMIDIUtils(unittest.TestCase):
     def testCopyright(self):
         notice = "2016(C) MCW"
         MyMIDI = MIDIFile(1)
-        MyMIDI.addCopyright(0, 0, notice)
+        MyMIDI.add_copyright(0, 0, notice)
         MyMIDI.close()
 
         payload_encoded = notice.encode("ISO-8859-1")
         payloadLength = len(payload_encoded)
-        payloadLengthVar = writeVarLength(payloadLength)
+        payloadLengthVar = write_var_length(payloadLength)
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
 
@@ -361,12 +361,12 @@ class TestMIDIUtils(unittest.TestCase):
     def testText(self):
         text = "2016(C) MCW"
         MyMIDI = MIDIFile(1)
-        MyMIDI.addText(0, 0, text)
+        MyMIDI.add_text(0, 0, text)
         MyMIDI.close()
 
         payload_encoded = text.encode("ISO-8859-1")
         payloadLength = len(payload_encoded)
-        payloadLengthVar = writeVarLength(payloadLength)
+        payloadLengthVar = write_var_length(payloadLength)
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
 
@@ -394,7 +394,7 @@ class TestMIDIUtils(unittest.TestCase):
         denominator = 2
         clocks_per_tick = 24
         MyMIDI = MIDIFile(1, file_format=2)
-        MyMIDI.addTimeSignature(track, time, numerator, denominator, clocks_per_tick)
+        MyMIDI.add_time_signature(track, time, numerator, denominator, clocks_per_tick)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[0].MIDIdata)
@@ -419,7 +419,7 @@ class TestMIDIUtils(unittest.TestCase):
         denominator = 2
         clocks_per_tick = 24
         MyMIDI = MIDIFile(2, file_format=1)
-        MyMIDI.addTimeSignature(track, time, numerator, denominator, clocks_per_tick)
+        MyMIDI.add_time_signature(track, time, numerator, denominator, clocks_per_tick)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[0].MIDIdata)
@@ -443,7 +443,7 @@ class TestMIDIUtils(unittest.TestCase):
         mode            = MAJOR
 
         MyMIDI = MIDIFile(1)
-        MyMIDI.addKeySignature(track, time, accidentals, accidental_type, mode)
+        MyMIDI.add_key_signature(track, time, accidentals, accidental_type, mode)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[0].MIDIdata)
@@ -466,7 +466,7 @@ class TestMIDIUtils(unittest.TestCase):
         MyMIDI = MIDIFile(1)
         if MyMIDI.header.numeric_format == 1:
             realtracknum = tracknum + 1
-        MyMIDI.addProgramChange(tracknum, channel, time, program)
+        MyMIDI.add_program_change(tracknum, channel, time, program)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[realtracknum].MIDIdata)
@@ -485,7 +485,7 @@ class TestMIDIUtils(unittest.TestCase):
         MyMIDI = MIDIFile(1)
         if MyMIDI.header.numeric_format == 1:
             realtracknum = tracknum + 1
-        MyMIDI.addChannelPressure(tracknum, channel, time, pressure)
+        MyMIDI.add_channel_pressure(tracknum, channel, time, pressure)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[realtracknum].MIDIdata)
@@ -498,7 +498,7 @@ class TestMIDIUtils(unittest.TestCase):
     def testTrackName(self):
         track_name = "track"
         MyMIDI = MIDIFile(1)
-        MyMIDI.addTrackName(0, 0, track_name)
+        MyMIDI.add_track_name(0, 0, track_name)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
@@ -512,7 +512,7 @@ class TestMIDIUtils(unittest.TestCase):
     def testLongTrackName(self):
         track_name = 'long track name ' * 8
         MyMIDI = MIDIFile(1)
-        MyMIDI.addTrackName(0, 0, track_name)
+        MyMIDI.add_track_name(0, 0, track_name)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
@@ -527,7 +527,7 @@ class TestMIDIUtils(unittest.TestCase):
         bank = 1
         channel = 0
         MyMIDI = MIDIFile(1)
-        MyMIDI.changeTuningBank(0, 0, 0, bank)
+        MyMIDI.change_tuning_bank(0, 0, 0, bank)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
@@ -554,7 +554,7 @@ class TestMIDIUtils(unittest.TestCase):
     def testTuningBankWithTimeOrder(self):
         bank = 1
         MyMIDI = MIDIFile(1)
-        MyMIDI.changeTuningBank(0, 0, 0, bank, time_order=True)
+        MyMIDI.change_tuning_bank(0, 0, 0, bank, time_order=True)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
@@ -570,7 +570,7 @@ class TestMIDIUtils(unittest.TestCase):
         program = 10
         channel = 0
         MyMIDI = MIDIFile(1)
-        MyMIDI.changeTuningProgram(0, 0, 0, program)
+        MyMIDI.change_tuning_program(0, 0, 0, program)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
@@ -597,7 +597,7 @@ class TestMIDIUtils(unittest.TestCase):
     def testTuningProgramWithTimeOrder(self):
         program = 10
         MyMIDI = MIDIFile(1)
-        MyMIDI.changeTuningProgram(0, 0, 0, program, time_order=True)
+        MyMIDI.change_tuning_program(0, 0, 0, program, time_order=True)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
@@ -618,7 +618,7 @@ class TestMIDIUtils(unittest.TestCase):
         data_msb       = 3
         data_lsb       = 4
         MyMIDI = MIDIFile(1)
-        MyMIDI.makeNRPNCall(track, channel, time, controller_msb, controller_lsb, data_msb, data_lsb)
+        MyMIDI.make_nrpn_call(track, channel, time, controller_msb, controller_lsb, data_msb, data_lsb)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
@@ -651,7 +651,7 @@ class TestMIDIUtils(unittest.TestCase):
         data_msb       = 3
         data_lsb       = 4
         MyMIDI = MIDIFile(1)
-        MyMIDI.makeNRPNCall(track, channel, time, controller_msb, controller_lsb, data_msb, data_lsb, time_order=True)
+        MyMIDI.make_nrpn_call(track, channel, time, controller_msb, controller_lsb, data_msb, data_lsb, time_order=True)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
@@ -682,7 +682,7 @@ class TestMIDIUtils(unittest.TestCase):
         controller_number = 1
         parameter = 2
         MyMIDI = MIDIFile(1)
-        MyMIDI.addControllerEvent(track, channel, time, controller_number, parameter)
+        MyMIDI.add_controller_event(track, channel, time, controller_number, parameter)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
@@ -705,8 +705,8 @@ class TestMIDIUtils(unittest.TestCase):
 
         # Just for fun we'll use a multi-byte time
         time = 1
-        time_bytes = writeVarLength(time * MyMIDI.ticks_per_quarternote)
-        MyMIDI.addUniversalSysEx(0, time, code, subcode, payload, realTime=False)
+        time_bytes = write_var_length(time * MyMIDI.ticks_per_quarternote)
+        MyMIDI.add_universal_sys_ex(0, time, code, subcode, payload, real_time=False)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
@@ -731,7 +731,7 @@ class TestMIDIUtils(unittest.TestCase):
 
         payload = struct.pack('>B', payload_number)
         MyMIDI = MIDIFile(1)
-        MyMIDI.addUniversalSysEx(0, 0, code, subcode, payload, realTime=True)
+        MyMIDI.add_universal_sys_ex(0, 0, code, subcode, payload, real_time=True)
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
@@ -750,7 +750,7 @@ class TestMIDIUtils(unittest.TestCase):
 
     def testTuning(self):
         MyMIDI = MIDIFile(1)
-        MyMIDI.changeNoteTuning(0, [(1, 440), (2, 880)])
+        MyMIDI.change_note_tuning(0, [(1, 440), (2, 880)])
         MyMIDI.close()
 
         data = Decoder(MyMIDI.tracks[1].MIDIdata)
@@ -781,7 +781,7 @@ class TestMIDIUtils(unittest.TestCase):
         MyMIDI = MIDIFile(1)
         MyMIDI.addNote(0, 0, 100, 0, 1, 100)
         with open("/tmp/test.mid", "wb") as output_file:
-            MyMIDI.writeFile(output_file)
+            MyMIDI.write_file(output_file)
 
     def testAdjustOrigin(self):
         track    = 0
@@ -829,7 +829,7 @@ class TestMIDIUtils(unittest.TestCase):
         data_length_2 = len(MyMIDI.tracks[0].MIDIdata)
 
         self.assertEqual(data_length_1, data_length_2)
-        MyMIDI.tracks[0].closeTrack()
+        MyMIDI.tracks[0].close_track()
         data_length_3 = len(MyMIDI.tracks[0].MIDIdata)
         self.assertEqual(data_length_1, data_length_3)
 
@@ -864,14 +864,14 @@ class TestMIDIUtils(unittest.TestCase):
         track = 0
         time = 0
         MyMIDI = MIDIFile(1)
-        MyMIDI.addTempo(track, time, tempo)
-        MyMIDI.addTempo(track, time, tempo)
+        MyMIDI.add_tempo(track, time, tempo)
+        MyMIDI.add_tempo(track, time, tempo)
         MyMIDI.close()
         self.assertEqual(1, len(MyMIDI.tracks[0].eventList))
         MyMIDI = MIDIFile(1)
-        MyMIDI.addTempo(track, time, tempo)
+        MyMIDI.add_tempo(track, time, tempo)
         tempo = 80
-        MyMIDI.addTempo(track, time, tempo)
+        MyMIDI.add_tempo(track, time, tempo)
         MyMIDI.close()
         self.assertEqual(2, len(MyMIDI.tracks[0].eventList))
 
@@ -881,14 +881,14 @@ class TestMIDIUtils(unittest.TestCase):
         program = 10
         channel = 0
         MyMIDI = MIDIFile(1)
-        MyMIDI.addProgramChange(track, channel, time, program)
-        MyMIDI.addProgramChange(track, channel, time, program)
+        MyMIDI.add_program_change(track, channel, time, program)
+        MyMIDI.add_program_change(track, channel, time, program)
         MyMIDI.close()
         self.assertEqual(1, len(MyMIDI.tracks[track + 1].eventList))
         MyMIDI = MIDIFile(1)
-        MyMIDI.addProgramChange(track, channel, time, program)
+        MyMIDI.add_program_change(track, channel, time, program)
         program = 11
-        MyMIDI.addProgramChange(track, channel, time, program)
+        MyMIDI.add_program_change(track, channel, time, program)
         MyMIDI.close()
         self.assertEqual(2, len(MyMIDI.tracks[track + 1].eventList))
 
@@ -897,14 +897,14 @@ class TestMIDIUtils(unittest.TestCase):
         time = 0
         track_name = "track"
         MyMIDI = MIDIFile(1)
-        MyMIDI.addTrackName(track, time, track_name)
-        MyMIDI.addTrackName(track, time, track_name)
+        MyMIDI.add_track_name(track, time, track_name)
+        MyMIDI.add_track_name(track, time, track_name)
         MyMIDI.close()
         self.assertEqual(1, len(MyMIDI.tracks[1].eventList))
         MyMIDI = MIDIFile(1)
-        MyMIDI.addTrackName(track, time, track_name)
+        MyMIDI.add_track_name(track, time, track_name)
         track_name = "track 2"
-        MyMIDI.addTrackName(track, time, track_name)
+        MyMIDI.add_track_name(track, time, track_name)
         MyMIDI.close()
         self.assertEqual(2, len(MyMIDI.tracks[1].eventList))
 
@@ -913,8 +913,8 @@ class TestMIDIUtils(unittest.TestCase):
         time = 0
         manufacturer = 10
         MyMIDI = MIDIFile(1)
-        MyMIDI.addSysEx(track, time, manufacturer, struct.pack('>B', 0x01))
-        MyMIDI.addSysEx(track, time, manufacturer, struct.pack('>B', 0x01))
+        MyMIDI.add_sys_ex(track, time, manufacturer, struct.pack('>B', 0x01))
+        MyMIDI.add_sys_ex(track, time, manufacturer, struct.pack('>B', 0x01))
         MyMIDI.close()
         self.assertEqual(2, len(MyMIDI.tracks[1].eventList))
 
@@ -928,8 +928,8 @@ class TestMIDIUtils(unittest.TestCase):
 
         payload = struct.pack('>B', payload_number)
         MyMIDI = MIDIFile(1)
-        MyMIDI.addUniversalSysEx(track, time, code, subcode, payload, realTime=True)
-        MyMIDI.addUniversalSysEx(track, time, code, subcode, payload, realTime=True)
+        MyMIDI.add_universal_sys_ex(track, time, code, subcode, payload, real_time=True)
+        MyMIDI.add_universal_sys_ex(track, time, code, subcode, payload, real_time=True)
         MyMIDI.close()
         self.assertEqual(2, len(MyMIDI.tracks[1].eventList))
 

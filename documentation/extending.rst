@@ -84,7 +84,7 @@ Al of this will perhaps be more clear if we examine the code:
           subcode = 0x51
           fourbite = struct.pack('>L', self.tempo)  # big-endian uint32
           threebite = fourbite[1:4]  # Just discard the MSB
-          varTime = writeVarLength(self.tick - previous_event_tick)
+          varTime = write_var_length(self.tick - previous_event_tick)
           for timeByte in varTime:
               midibytes += struct.pack('>B', timeByte)
           midibytes += struct.pack('>B', code)
@@ -113,7 +113,7 @@ Lastly, the ``serialize`` member function should be created. This will return a
 byte stream representing the MIDI data. A few things to note about this:
 
 - All MIDI events begin with a time, which is written in an idiosyncratic
-  variable-length format. Use the ``writeVarLength`` utility function to calculate
+  variable-length format. Use the ``write_var_length`` utility function to calculate
   this.
 - Note that in the case of the tempo event, the standard only uses three bytes,
   whereas in python a long will be packed into four bytes. Hence we just
@@ -133,7 +133,7 @@ event of this type. Continuing the example of the tempo event:
 
 .. code:: python
 
-  def addTempo(self, tick, tempo, insertion_order=0):
+  def add_tempo(self, tick, tempo, insertion_order=0):
       '''
       Add a tempo change (or set) event.
       '''
@@ -154,7 +154,7 @@ the track number to which the event is written. So in ``MIDIFile``:
 
 .. code:: python
 
-  def addTempo(self, track, time, tempo):
+  def add_tempo(self, track, time, tempo):
       """
 
       Add notes to the MIDIFile object
@@ -167,7 +167,7 @@ the track number to which the event is written. So in ``MIDIFile``:
       """
       if self.header.numeric_format == 1:
           track = 0
-      self.tracks[track].addTempo(self.time_to_ticks(time), tempo,
+      self.tracks[track].add_tempo(self.time_to_ticks(time), tempo,
                                   insertion_order=self.event_counter)
       self.event_counter += 1
 
